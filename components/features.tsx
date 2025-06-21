@@ -16,12 +16,12 @@ export const projects = [
     {
         title: "Prescription Generation",
         description:
-            "Automatically generate medical prescriptions based on AI diagnosis, ready to download or share with pharmacies.",
+            "Automatically generate medical prescriptions based on AI diagnosis, ready to download.",
     },
     {
         title: "24x7 Medical Support",
         description:
-            "Get round-the-clock support for general health issues, medication queries, and emergency triage using intelligent assistance.",
+            "Get round-the-clock support for general health issues, medication queries using intelligent assistance.",
     },
     {
         title: "Health Records Dashboard",
