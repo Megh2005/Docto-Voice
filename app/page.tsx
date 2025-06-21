@@ -4,19 +4,20 @@ import { motion } from "motion/react";
 import Banner from "@/components/banner";
 import Features from "@/components/features";
 import Link from "next/link";
+import Testimonials from "@/components/testimonials";
 
 
 export default function HeroSectionOne() {
   return (
     <div className="relative flex flex-col items-center justify-center">
-      <Banner/>
+      <Banner />
       <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200/80 dark:bg-neutral-800/80">
         <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
       </div>
       <div className="absolute inset-y-0 right-0 h-full w-px bg-neutral-200/80 dark:bg-neutral-800/80">
         <div className="absolute h-40 w-px bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
       </div>
-     
+
       <div className="px-4 py-10 md:py-20">
         <h1 className="relative z-10 mx-auto max-w-6xl text-center text-2xl font-bold text-slate-700 md:text-4xl lg:text-7xl dark:text-slate-300">
           {"Transforming the Present Image of Health Tech"
@@ -77,7 +78,8 @@ export default function HeroSectionOne() {
           </Link>
         </motion.div>
       </div>
-      <Features/>
+      <Features />
+      <Testimonials />
     </div>
   );
 }
