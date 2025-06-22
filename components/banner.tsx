@@ -8,7 +8,7 @@ export default function Banner() {
         className="bg-gradient-to-b from-[#0f0c29]  to-[#24243e]"
       >
         <p className="mx-0 max-w-[90%] text-white drop-shadow-md">
-          Production grade application for this website is coming soon
+          Production grade application for this website is coming soon 🧙
         </p>
       </StickyBanner>
     </div>
