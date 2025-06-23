@@ -5,6 +5,10 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import {
+  ClerkProvider,
+} from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
 
 
 const inter = Inter({
@@ -24,7 +28,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
+      <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple.png" />
@@ -45,5 +54,6 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
+    </ClerkProvider>
   );
 }
