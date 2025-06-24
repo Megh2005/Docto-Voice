@@ -6,15 +6,19 @@ import Features from "@/components/features";
 import Testimonials from "@/components/testimonials";
 import Demo from "@/components/tutorial";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "@/components/navbar";
+import ContactModal from "@/components/contact-modal"; // Adjust path as needed
 
 
 export default function HeroSectionOne() {
-  const router = useRouter();
+  const router = useRouter(); 
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   return (
     <TooltipProvider>
+      <Navbar/>
       <div className="relative flex flex-col items-center justify-center">
         <Banner />
         <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200/80 dark:bg-neutral-800/80">
@@ -72,13 +76,24 @@ export default function HeroSectionOne() {
             }}
             className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
           >
-            <button className="w-60 transform rounded-lg bg-black px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
-              Explore Now
-            </button>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  onClick={() => router.push("/contact")}
+                  onClick={() => router.push("/dashboard")}
+                  className="w-60 transform rounded-lg bg-black px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                >
+                  Explore Now
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Go to your personalized dashboard</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => setIsContactModalOpen(true)}
                   className="inline-block w-60 transform rounded-lg border border-[#3b82f6] bg-[#111827] px-6 py-2 font-medium text-[#e0e7ff] transition-all duration-300 hover:-translate-y-0.5"
                 >
                   Contact Support
@@ -93,6 +108,12 @@ export default function HeroSectionOne() {
         <Features />
         <Demo />
         <Testimonials />
+        
+        {/* Contact Modal */}
+        <ContactModal 
+          isOpen={isContactModalOpen}
+          onOpenChange={setIsContactModalOpen}
+        />
       </div>
     </TooltipProvider>
   );

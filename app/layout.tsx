@@ -3,12 +3,12 @@ import { Inter } from "next/font/google"
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
+import Provider from "./provider";
 
 
 const inter = Inter({
@@ -34,26 +34,27 @@ export default function RootLayout({
       }}
     >
       <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="/apple.png" />
-      </head>
-      <body
-        className={`${inter.className} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
+        <head>
+          <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+          <link rel="apple-touch-icon" href="/apple.png" />
+        </head>
+        <body
+          className={`${inter.className} antialiased`}
         >
-          <Navbar/>
-          {children}
-          <Footer/>
-          <Toaster />
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Provider>
+              {children}
+            </Provider>
+            <Footer />
+            <Toaster />
+          </ThemeProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

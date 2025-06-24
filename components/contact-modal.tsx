@@ -1,14 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { X } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 import emailjs from '@emailjs/browser';
 
-export default function ContactForm() {
+interface ContactModalProps {
+    trigger?: React.ReactNode;
+    isOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+}
+
+export default function ContactModal({ trigger, isOpen, onOpenChange }: ContactModalProps) {
+    const { user, isLoaded } = useUser();
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -20,6 +30,22 @@ export default function ContactForm() {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [modalOpen, setModalOpen] = useState(false);
+
+    // Use external state if provided, otherwise use internal state
+    const open = isOpen !== undefined ? isOpen : modalOpen;
+    const setOpen = onOpenChange || setModalOpen;
+
+    // Auto-populate name and email from Clerk user data
+    useEffect(() => {
+        if (isLoaded && user) {
+            setFormData(prev => ({
+                ...prev,
+                name: user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim() || '',
+                email: user.primaryEmailAddress?.emailAddress || ''
+            }));
+        }
+    }, [isLoaded, user]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -63,6 +89,12 @@ export default function ContactForm() {
                 time: "",
             });
 
+            // Close modal after successful submission (optional)
+            setTimeout(() => {
+                setOpen(false);
+                setSubmitStatus('idle');
+            }, 2000);
+
         } catch (error) {
             console.error('Error sending email:', error);
             setSubmitStatus('error');
@@ -72,14 +104,18 @@ export default function ContactForm() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-6">
-            <Card className="bg-[#111827] border-[#3b82f6]/30 shadow-xl">
-                <CardHeader className="pb-6">
-                    <CardTitle className="text-2xl font-semibold text-[#e0e7ff]">
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                {trigger}
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-[#111827] border-[#3b82f6]/30">
+                <DialogHeader>
+                    <DialogTitle className="text-2xl font-semibold text-[#e0e7ff]">
                         Contact Us
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
+                    </DialogTitle>
+                </DialogHeader>
+
+                <div className="mt-2">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {submitStatus === 'success' && (
                             <div className="p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
@@ -110,7 +146,8 @@ export default function ContactForm() {
                                     onChange={handleChange}
                                     className="bg-[#1f2937] text-[#e0e7ff] border-[#3b82f6]/20 focus:border-[#3b82f6] focus:ring-[#3b82f6]"
                                     required
-                                    disabled={isSubmitting}
+                                    disabled
+                                    placeholder={!isLoaded ? "Loading..." : ""}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -125,7 +162,8 @@ export default function ContactForm() {
                                     onChange={handleChange}
                                     className="bg-[#1f2937] text-[#e0e7ff] border-[#3b82f6]/20 focus:border-[#3b82f6] focus:ring-[#3b82f6]"
                                     required
-                                    disabled={isSubmitting}
+                                    disabled
+                                    placeholder={!isLoaded ? "Loading..." : ""}
                                 />
                             </div>
                         </div>
@@ -142,6 +180,7 @@ export default function ContactForm() {
                                 onChange={handleChange}
                                 className="bg-[#1f2937] text-[#e0e7ff] border-[#3b82f6]/20 focus:border-[#3b82f6] focus:ring-[#3b82f6]"
                                 required
+
                                 disabled={isSubmitting}
                             />
                         </div>
@@ -198,18 +237,18 @@ export default function ContactForm() {
                             </div>
                         </div>
 
-                        <div className="pt-4">
+                        <div className="pt-4 flex gap-3">
                             <Button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full bg-[#fff] text-black font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex-1 bg-[#fff] text-black font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isSubmitting ? 'Sending...' : 'Send Message'}
                             </Button>
                         </div>
                     </form>
-                </CardContent>
-            </Card>
-        </div>
+                </div>
+            </DialogContent>
+        </Dialog>
     );
 }
