@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { X } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import emailjs from '@emailjs/browser';
 
@@ -54,7 +53,7 @@ export default function ContactModal({ trigger, isOpen, onOpenChange }: ContactM
     const getTodayDate = () => {
         const today = new Date();
         const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setDate(tomorrow.getDate() + 2);
         return tomorrow.toISOString().split('T')[0];
     };
 
