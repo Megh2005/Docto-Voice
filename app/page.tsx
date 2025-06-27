@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/navbar";
 import ContactModal from "@/components/contact-modal"; // Adjust path as needed
+import DarkFooter from "@/components/footer";
 
 
 export default function HeroSectionOne() {
@@ -115,6 +116,7 @@ export default function HeroSectionOne() {
           onOpenChange={setIsContactModalOpen}
         />
       </div>
+      <DarkFooter />
     </TooltipProvider>
   );
 }

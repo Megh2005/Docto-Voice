@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Workspace = () => {
+const Dashboard = () => {
   return (
-    <div>Workspace</div>
+    <div>Dashboard</div>
   )
 }
 
-export default Workspace
+export default Dashboard

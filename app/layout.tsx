@@ -3,7 +3,6 @@ import { Inter } from "next/font/google"
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import Footer from "@/components/footer";
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
@@ -50,7 +49,6 @@ export default function RootLayout({
             <Provider>
               {children}
             </Provider>
-            <Footer />
             <Toaster />
           </ThemeProvider>
         </body>
